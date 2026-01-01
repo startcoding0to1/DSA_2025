@@ -1,0 +1,160 @@
+Important points:
+================
+-> The heap array is not sorted, but the root position always contains the largest/smallest value, so we don’t care about the order of inner elements.
+-> 1️⃣ Heap Order Property
+-> 2️⃣ Complete Binary Tree Property (VERY IMPORTANT)
+
+Min heap = Parent should be ≤ its children
+
+✅ Heapify-Down Algorithm (Min Heap) — Steps
+============================================
+
+1. Start at the root node
+Set index = 0.
+
+2. Repeat while the current node has at least a left child:
+(Because if no left child → no children → stop.)
+
+3. Assume the left child is the smaller child.
+smallerChildIndex = leftChild(index)
+
+4. If there is a right child and it is smaller than the left child:
+Update
+smallerChildIndex = rightChild(index)
+
+5. Compare the current node with the smaller child:
+If current node ≤ smaller child, the min-heap property is satisfied → STOP.
+Else, swap the current node with the smaller child.
+
+6. Move the index down to the smaller child.
+
+7. Repeat steps 2–6 until the node is in the correct position.
+
+
+
+
+✅ Heapify-Up Algorithm (Min Heap) — Steps
+==========================================
+1. Start at the last inserted element
+Set
+index = size - 1.
+
+2. While the current node has a parent
+(If no parent → you are at the root → stop.)
+
+3. Compare parent with the current node:
+ If parent ≤ current node, the min-heap property is satisfied → STOP.
+ If parent > current node, then the heap property is violated.
+
+4. Swap the current node with its parent.
+
+5. Move the index to the parent’s index.
+
+6. Repeat steps 2–5 until:
+ you reach the root, or
+ heap property is restored.
+
+
+ ✅ Why do we replace the root with the LAST index when polling?
+
+ Because the heap must always satisfy two rules:
+
+ 1️⃣ Heap Order Property
+
+ ✓ Parent must be smaller (Min-Heap) or larger (Max-Heap)
+
+ 2️⃣ Complete Binary Tree Property (VERY IMPORTANT)
+
+ ✓ The tree must be filled level-by-level, left to right, with NO gaps.
+
+ ⭐ The MAIN reason we use the last element:
+ 👉 To maintain the "complete binary tree" shape automatically.
+
+ Let’s see why.
+
+ ❌ What happens if we remove the root WITHOUT replacing it?
+
+ You get a hole at the top, breaking the shape rule:
+
+        [EMPTY]
+        /     \
+      20       15
+
+
+ This is not allowed.
+
+ ❌ What if we replace the root with a random element inside the tree?
+
+ Example:
+
+ Original:
+         10
+        /  \
+      20    15
+     / \
+    40  50
+
+
+ Suppose you choose 40 (random value) to replace root:
+
+ Replace root with 40:
+         40
+        /  \
+      20    15
+     /
+    [empty]
+
+
+ Look at the shape:
+ There is now a hole in the middle → tree is NOT complete anymore.
+
+ This is illegal for heaps.
+
+ ✅ Why the LAST element works perfectly
+ Because the LAST element is always the rightmost node of the bottom level.
+
+ Removing it never breaks the shape:
+
+ Original:
+         10
+        /  \
+      20    15
+     / \
+    40  50
+
+
+ Step 1: Remove last element (50):
+
+ Now tree:
+         10
+        /  \
+      20    15
+     /
+    40
+
+
+ Step 2: Put that 50 at root:
+
+         50
+        /  \
+      20    15
+     /
+    40
+
+
+ Tree is still complete, no gaps, perfect shape.
+
+ Now we just heapifyDown() to restore order.
+
+ ✔ Summary (Easy to Remember)
+ Reason	Explanation
+ Complete Tree	Only removing the LAST element keeps the tree shape valid
+ No Gaps	Last node removal avoids holes in the middle
+ Efficient	Last index is easy to access: O(1)
+ Fixable	Putting it at the root lets us fix the heap using heapifyDown
+ 🧠 Final Answer
+
+ We replace the root with the last index value because:
+
+ Only the last element can be removed without breaking the complete binary tree structure.
+ Any other element would create a hole in the middle — invalid for heaps.
